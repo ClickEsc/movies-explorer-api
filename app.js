@@ -5,14 +5,8 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const { login, createUser } = require('./controllers/auth');
+const router = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const auth = require('./middlewares/auth');
-const { signinInfoValidator } = require('./middlewares/validators/signin');
-const { signupInfoValidator } = require('./middlewares/validators/signup');
-const moviesRouter = require('./routes/movies');
-const usersRouter = require('./routes/users');
-const errorRouter = require('./routes/error');
 
 const { PORT = 3001 } = process.env;
 
@@ -51,14 +45,7 @@ app.get('/crash-test', () => {
 });
 
 // Роутинг
-app.post('/signin', signinInfoValidator, login);
-app.post('/signup', signupInfoValidator, createUser);
-
-app.use(auth);
-
-app.use('/', moviesRouter);
-app.use('/', usersRouter);
-app.use('/', errorRouter);
+app.use(router);
 
 // Логгирование ошибок
 app.use(errorLogger);
