@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { badUrlErrorText } = require('../utils/errorTexts');
+const { urlRegex } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -26,11 +28,9 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(url) {
-        // eslint-disable-next-line no-useless-escape
-        const regex = /https?:\/\/w{0,3}[a-z0-9-._~:\/?#[\]@!$&'()*+,;=]{0,}/i;
-        return regex.test(url);
+        return urlRegex.test(url);
       },
-      message: 'Введите URL.',
+      message: badUrlErrorText,
     },
   },
   trailer: {
@@ -38,11 +38,9 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(url) {
-        // eslint-disable-next-line no-useless-escape
-        const regex = /https?:\/\/w{0,3}[a-z0-9-._~:\/?#[\]@!$&'()*+,;=]{0,}/i;
-        return regex.test(url);
+        return urlRegex.test(url);
       },
-      message: 'Введите URL.',
+      message: badUrlErrorText,
     },
   },
   // Миниатюрное изображение постера к фильму
@@ -51,11 +49,9 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(url) {
-        // eslint-disable-next-line no-useless-escape
-        const regex = /https?:\/\/w{0,3}[a-z0-9-._~:\/?#[\]@!$&'()*+,;=]{0,}/i;
-        return regex.test(url);
+        return urlRegex.test(url);
       },
-      message: 'Введите URL.',
+      message: badUrlErrorText,
     },
   },
   owner: {

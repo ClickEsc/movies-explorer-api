@@ -1,7 +1,9 @@
 const User = require('../models/user');
-
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
+const {
+  userNotFoundErrorText, badRequestErrorText,
+} = require('../utils/errorTexts');
 
 // Запрос информации о текущем пользователе
 module.exports.getCurrentUser = (req, res, next) => {
@@ -10,14 +12,14 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        throw new NotFoundError(userNotFoundErrorText);
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('Нет пользователя с таким id');
+        throw new BadRequestError(userNotFoundErrorText);
       } else {
         next(err);
       }
@@ -37,16 +39,16 @@ module.exports.updateProfileInfo = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        throw new NotFoundError(userNotFoundErrorText);
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('Нет пользователя с таким id');
+        throw new BadRequestError(userNotFoundErrorText);
       } else if (err.name === 'ValidationError') {
-        throw new BadRequestError('Переданы некорректные данные');
+        throw new BadRequestError(badRequestErrorText);
       } else {
         next(err);
       }
