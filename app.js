@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const moviesRouter = require('./routes/movies.js');
-const usersRouter = require('./routes/users.js');
+const { login, createUser } = require('./controllers/auth');
+const auth = require('./middlewares/auth');
+const moviesRouter = require('./routes/movies');
+const usersRouter = require('./routes/users');
 
 const { PORT = 3001 } = process.env;
 
@@ -15,8 +17,13 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useFindAndModify: false,
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/signin', login);
+app.post('/signup', createUser);
+
+app.use(auth);
 
 app.use('/', moviesRouter);
 app.use('/', usersRouter);
