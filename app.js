@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
@@ -12,6 +13,9 @@ const usersRouter = require('./routes/users');
 const { PORT = 3001 } = process.env;
 
 const app = express();
+
+// CORS
+app.use(cors());
 
 app.use(helmet());
 
