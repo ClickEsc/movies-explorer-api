@@ -9,7 +9,7 @@ const {
 // Запрос списка сохраненных фильмов
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
-    .then((movies) => res.status(200).send(movies))
+    .then((movies) => res.send(movies))
     .catch(next);
 };
 
@@ -23,7 +23,8 @@ module.exports.addMovie = (req, res, next) => {
       } else {
         next(err);
       }
-    });
+    })
+    .catch(next);
 };
 
 // Запрос на удаление фильма из сохраненных по идентификатору
@@ -34,9 +35,9 @@ module.exports.deleteMovie = (req, res, next) => {
     })
     .then((data) => {
       if (req.user._id === data.owner.toString()) {
-        Movie.findByIdAndRemove({ _id: data._id })
+        Movie.remove({ _id: data._id })
           .then(() => {
-            res.status(200).send({ message: movieDeleteOkText });
+            res.send({ message: movieDeleteOkText });
           })
           .catch(next);
       } else {
@@ -49,5 +50,6 @@ module.exports.deleteMovie = (req, res, next) => {
       } else {
         next(err);
       }
-    });
+    })
+    .catch(next);
 };

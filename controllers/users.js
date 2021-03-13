@@ -14,7 +14,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError(userNotFoundErrorText);
       } else {
-        res.status(200).send(user);
+        res.send(user);
       }
     })
     .catch((err) => {
@@ -23,7 +23,8 @@ module.exports.getCurrentUser = (req, res, next) => {
       } else {
         next(err);
       }
-    });
+    })
+    .catch(next);
 };
 
 // Запрос на обновление информации в профиле
@@ -41,7 +42,7 @@ module.exports.updateProfileInfo = (req, res, next) => {
       if (!user) {
         throw new NotFoundError(userNotFoundErrorText);
       } else {
-        res.status(200).send(user);
+        res.send(user);
       }
     })
     .catch((err) => {
@@ -52,5 +53,6 @@ module.exports.updateProfileInfo = (req, res, next) => {
       } else {
         next(err);
       }
-    });
+    })
+    .catch(next);
 };

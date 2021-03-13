@@ -5,8 +5,7 @@ const User = require('../models/user');
 const { JWT_SECRET } = require('../utils/configs');
 const BadRequestError = require('../errors/bad-request-err');
 const ConflictError = require('../errors/conflict-err');
-const UnauthorizedError = require('../errors/unauthorized-err');
-const { badRequestErrorText, userConflictErrorText, authErrorText } = require('../utils/errorTexts');
+const { badRequestErrorText, badInputsDataErrorText, userConflictErrorText } = require('../utils/errorTexts');
 
 // Запрос на создание пользователя
 module.exports.createUser = (req, res, next) => {
@@ -26,7 +25,7 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((user) => res.status(200).send({
+    .then((user) => res.send({
       name: user.name,
       email: user.email,
     }))
@@ -45,7 +44,7 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .catch(() => {
-      throw new UnauthorizedError(authErrorText);
+      throw new BadRequestError(badInputsDataErrorText);
     })
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });

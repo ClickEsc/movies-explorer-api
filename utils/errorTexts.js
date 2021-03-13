@@ -1,4 +1,5 @@
 const authErrorText = 'Требуется авторизация';
+const badInputsDataErrorText = 'Неправильная почта или пароль';
 const badRequestErrorText = 'Переданы некорректные данные';
 const userConflictErrorText = 'Пользователь с таким email уже существует';
 const movieNotFoundErrorText = 'Нет фильма с таким id';
@@ -11,6 +12,7 @@ const badUrlErrorText = 'Введите URL';
 
 module.exports = {
   authErrorText,
+  badInputsDataErrorText,
   badRequestErrorText,
   userConflictErrorText,
   movieNotFoundErrorText,
