@@ -34,6 +34,9 @@ module.exports.deleteMovie = (req, res, next) => {
       throw new NotFoundError(movieNotFoundErrorText);
     })
     .then((data) => {
+      if (!data) {
+        throw new NotFoundError(movieNotFoundErrorText);
+      }
       if (req.user._id === data.owner.toString()) {
         Movie.remove({ _id: data._id })
           .then(() => {
