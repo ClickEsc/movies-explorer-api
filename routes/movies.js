@@ -10,6 +10,6 @@ router.get('/movies', getMovies);
 router.post('/movies', postMovieInfoValidator, addMovie);
 
 // Запрос на удаление фильма
-router.delete('/movies/:movieId', movieIdValidator, deleteMovie);
+router.delete('/movies/:id', movieIdValidator, deleteMovie);
 
 module.exports = router;
