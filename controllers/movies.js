@@ -15,7 +15,33 @@ module.exports.getMovies = (req, res, next) => {
 
 // Запрос на добавление фильма в сохраненные
 module.exports.addMovie = (req, res, next) => {
-  Movie.create({ owner: req.user._id, ...req.body })
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    trailerLink,
+    image,
+    nameRU,
+    nameEN,
+    thumbnail,
+    id,
+  } = req.body;
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    owner: req.user._id,
+    id,
+  })
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -29,7 +55,7 @@ module.exports.addMovie = (req, res, next) => {
 
 // Запрос на удаление фильма из сохраненных по идентификатору
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params.id)
     .catch(() => {
       throw new NotFoundError(movieNotFoundErrorText);
     })
@@ -38,7 +64,7 @@ module.exports.deleteMovie = (req, res, next) => {
         throw new NotFoundError(movieNotFoundErrorText);
       }
       if (req.user._id === data.owner.toString()) {
-        Movie.remove({ _id: data._id })
+        Movie.deleteOne({ _id: data._id })
           .then(() => {
             res.send({ message: movieDeleteOkText });
           })
